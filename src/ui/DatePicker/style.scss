@@ -1,0 +1,27 @@
+.datepicker {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  max-width: 400px;
+  background-color: #fff;
+
+  &-input {
+    border: none;
+    outline: none;
+    width: 100%;
+    text-align: center;
+  }
+
+  &-attr {
+    padding: 0 16px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #576ff4;
+    color: #fff;
+    font-style: 16px;
+  }
+}
