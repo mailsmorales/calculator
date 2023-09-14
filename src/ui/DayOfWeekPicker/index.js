@@ -1,89 +1,71 @@
-import React, { useState } from 'react';
-import "./style.scss"
+import React, { useState } from "react";
+import "./style.scss";
 
-function DayOfWeekPicker() {
-    const [selectedDays, setSelectedDays] = useState([]);
-    const [selectSpecificDays1, setSelectSpecificDays1] = useState(false); // (ПН/СР/ПТ)
-    const [selectSpecificDays2, setSelectSpecificDays2] = useState(false); // (ВТ/ЧТ)
+function DayOfWeekPicker({ setDays, days }) {
+  const [selectedSet, setSelectedSet] = useState(false);
 
-    const daysOfWeek = [
-        { value: 'monday', label: 'ПН' },
-        { value: 'tuesday', label: 'ВТ' },
-        { value: 'wednesday', label: 'СР' },
-        { value: 'thursday', label: 'ЧТ' },
-        { value: 'friday', label: 'ПТ' },
-        { value: 'saturday', label: 'СБ' },
-        { value: 'sunday', label: 'ВС' },
-    ];
-
-    const handleDayToggle = (dayValue) => {
-        if (selectedDays.includes(dayValue)) {
-            setSelectedDays(selectedDays.filter((day) => day !== dayValue));
-        } else {
-            setSelectedDays([...selectedDays, dayValue]);
+  const handleDayToggle = (dayValue) => {
+    setDays((prevState) => {
+      return prevState.map((item) => {
+        const newItem = { ...item };
+        if (newItem.value === dayValue) {
+          newItem.selected = !newItem.selected;
         }
-        setSelectSpecificDays1(false);
-        setSelectSpecificDays2(false);
-    };
+        return newItem;
+      });
+    });
+    setSelectedSet(false);
+  };
 
-    const handleSelectSpecificDays1 = () => {
-        if (!selectSpecificDays1) {
-            const specificDays1 = ['monday', 'wednesday', 'friday']; // (ПН/СР/ПТ)
-            setSelectedDays(specificDays1);
-            setSelectSpecificDays1(true);
-            setSelectSpecificDays2(false);
+  const handleSelectSpecificDays = (dayValues, btnIndex) => {
+    setDays((prevState) => {
+      return prevState.map((item) => {
+        const newItem = { ...item };
+        if (dayValues.includes(item.value)) {
+          if (!selectedSet) {
+            newItem.selected = true;
+            setSelectedSet(true);
+          } else {
+            newItem.selected = false;
+            setSelectedSet(false);
+          }
         } else {
-            setSelectedDays([]);
-            setSelectSpecificDays1(false);
-            setSelectSpecificDays2(true);
+          newItem.selected = false;
         }
-    };
+        return newItem;
+      });
+    });
+  };
 
-    const handleSelectSpecificDays2 = () => {
-        if (!selectSpecificDays2) {
-            const specificDays2 = ['tuesday', 'thursday']; // (ВТ/ЧТ)
-            setSelectedDays(specificDays2);
-            setSelectSpecificDays2(true);
-            setSelectSpecificDays1(false);
-        } else {
-            setSelectedDays([]);
-            setSelectSpecificDays2(false);
-            setSelectSpecificDays1(true);
-        }
-        setSelectSpecificDays2(!selectSpecificDays2);
-    };
-
-    return (
-        <div className='daypicker'>
-            <button
-                type="button"
-                onClick={handleSelectSpecificDays1}
-                className='daypicker-item'
-            >
-                ПН/СР/ПТ
-            </button>
-            <button
-                type="button"
-                onClick={handleSelectSpecificDays2}
-                className='daypicker-item'
-            >
-                ВТ/ЧТ
-            </button>
-            {daysOfWeek.map((day) => (
-                <label className='daypicker-item' key={day.value}>
-                    <input
-                        type="checkbox"
-                        value={day.value}
-                        checked={selectedDays.includes(day.value)}
-                        onChange={() => handleDayToggle(day.value)}
-                    />
-                    <p>
-                        {day.label}
-                    </p>
-                </label>
-            ))}
-        </div>
-    );
+  return (
+    <div className='daypicker'>
+      <button
+        type='button'
+        onClick={() => handleSelectSpecificDays(["monday", "wednesday", "friday"], 1)}
+        className={"daypicker-item"}
+      >
+        ПН/СР/ПТ
+      </button>
+      <button
+        type='button'
+        onClick={() => handleSelectSpecificDays(["tuesday", "thursday"], 2)}
+        className={"daypicker-item"}
+      >
+        ВТ/ЧТ
+      </button>
+      {days.map((day) => (
+        <label className='daypicker-item' key={day.value}>
+          <input
+            type='checkbox'
+            value={day.value}
+            checked={day.selected}
+            onChange={() => handleDayToggle(day.value)}
+          />
+          <p>{day.label}</p>
+        </label>
+      ))}
+    </div>
+  );
 }
 
 export default DayOfWeekPicker;

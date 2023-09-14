@@ -4,9 +4,11 @@ import "./style.scss";
 const NumericInput = ({
   initialValue,
   maxValue,
+  minValue,
   onValueChange,
   disabled,
   title,
+  showMaxValue,
 }) => {
   const [count, setCount] = useState(initialValue);
   const [intervalId, setIntervalId] = useState(null);
@@ -22,21 +24,23 @@ const NumericInput = ({
   };
 
   const decrement = () => {
-    setCount((prevCount) => (prevCount > 0 ? prevCount - 1 : 0));
+    setCount((prevCount) => (prevCount > minValue ? prevCount - 1 : minValue));
   };
 
   const handleMouseDown = (action) => {
-    setIsDelayed(true);
-    delayTimeoutRef.current = setTimeout(() => {
-      const id = setInterval(() => {
-        if (action === "increment") {
-          increment();
-        } else {
-          decrement();
-        }
-      }, 30);
-      setIntervalId(id);
-    }, 500);
+    if (count > minValue) {
+      setIsDelayed(true);
+      delayTimeoutRef.current = setTimeout(() => {
+        const id = setInterval(() => {
+          if (action === "increment") {
+            increment();
+          } else {
+            decrement();
+          }
+        }, 30);
+        setIntervalId(id);
+      }, 500);
+    }
   };
 
   const handleMouseUp = () => {
@@ -67,6 +71,9 @@ const NumericInput = ({
       if (maxValue !== undefined && parsedValue > maxValue) {
         parsedValue = maxValue;
       }
+      if (parsedValue < minValue) {
+        parsedValue = minValue;
+      }
       setCount(parsedValue);
     }
   };
@@ -87,6 +94,18 @@ const NumericInput = ({
       }
     };
   }, [intervalId]);
+
+  useEffect(() => {
+    if (showMaxValue && maxValue !== undefined) {
+      setCount(maxValue);
+    }
+  }, [showMaxValue, maxValue]);
+
+  useEffect(() => {
+    if (initialValue) {
+      setCount(initialValue);
+    }
+  }, [initialValue]);
 
   return (
     <div className={`numeric ${disabled ? "disabled" : ""}`}>

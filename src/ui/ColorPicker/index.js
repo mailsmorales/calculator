@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import "./style.scss";
 
-const ColorPicker = ({ colors }) => {
+const ColorPicker = ({ colors, setGroupColor }) => {
   const [open, setOpen] = useState(false);
   const [activeItem, setActiveItem] = useState(0);
 
   const handleChoseItem = (index) => {
     setActiveItem(index);
+    setGroupColor(colors[index]);
     setOpen(false);
   };
 

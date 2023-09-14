@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import "./style.scss";
 
-const Dropdown = ({ data, placeholder }) => {
+const Dropdown = ({ data, placeholder, setItem }) => {
   const [open, setOpen] = useState(false);
   const [activeItem, setActiveItem] = useState(null);
 
   const handleChoseItem = (index) => {
     setActiveItem(index);
     setOpen(false);
+    setItem(data[index]);
   };
 
   return (

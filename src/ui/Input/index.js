@@ -1,8 +1,15 @@
 import React from "react";
 import "./style.scss";
 
-const Input = ({ placeholder }) => {
-  return <input className="input" placeholder={placeholder} />;
+const Input = ({ placeholer, value, onValueChange }) => {
+  return (
+    <input
+      value={value}
+      onChange={(e) => onValueChange(e.target.value)}
+      className='input'
+      placeholder={placeholer}
+    />
+  );
 };
 
 export default Input;

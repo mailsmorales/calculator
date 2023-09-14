@@ -5,7 +5,7 @@
   &-row {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     gap: 16px;
   }
 
@@ -13,5 +13,24 @@
     display: flex;
     align-items: center;
     gap: 24px;
+  }
+}
+.footer {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  padding: 10px;
+
+  .btn {
+    border: none;
+    outline: none;
+    padding: 10px 15px;
+    background-color: transparent;
+    cursor: pointer;
+
+    &.outline {
+      border: 1px solid #4c4c4c;
+      border-radius: 4px;
+    }
   }
 }
