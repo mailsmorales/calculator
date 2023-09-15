@@ -13,12 +13,12 @@ const breakData = [
 const teacherData = [
   { title: "Али Микхманов", key: "0" },
   { title: "Полина Суетолог", key: "1" },
-  { title: "Гоша Галоша", key: "2" },
+  { title: "Гоша Гоша", key: "2" },
 ];
 const lectureHallData = [
   { title: "Класс Али Микхманова", key: "0" },
   { title: "Класс Полина Суетолога", key: "1" },
-  { title: "Класс Гоша Галоши", key: "2" },
+  { title: "Класс Гоша Гоша", key: "2" },
 ];
 const daysOfWeekData = [
   { value: "monday", label: "ПН", index: 1, selected: false },
