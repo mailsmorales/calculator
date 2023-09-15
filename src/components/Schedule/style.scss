@@ -15,6 +15,17 @@
     gap: 24px;
   }
 }
+.alert {
+  padding: 15px;
+  background-color: #efd6d6;
+  color: #5d5b5b;
+  font-weight: 400;
+
+  .bold-text {
+    color: black;
+    font-weight: bold;
+  }
+}
 .footer {
   display: flex;
   justify-content: end;

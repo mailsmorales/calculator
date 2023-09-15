@@ -208,8 +208,12 @@ const Schedule = ({ setData }) => {
             placeholder="Аудитория"
           />
         </div>
+        <div class="alert">
+          Выбор <span class="bold-text">преподавателя</span> и{" "}
+          <span class="bold-text">аудиторий</span> не обязателен.
+        </div>
       </div>
-      <div className="footer hui">
+      <div className="footer">
         <div>
           <button className="btn">Отмена</button>
           <button className="btn outline" onClick={handleAddSchedule}>
