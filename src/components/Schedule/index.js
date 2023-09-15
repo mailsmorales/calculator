@@ -208,9 +208,9 @@ const Schedule = ({ setData }) => {
             placeholder="Аудитория"
           />
         </div>
-        <div class="alert">
-          Выбор <span class="bold-text">преподавателя</span> и{" "}
-          <span class="bold-text">аудиторий</span> не обязателен.
+        <div className="alert">
+          Выбор <span className="bold-text">преподавателя</span> и{" "}
+          <span className="bold-text">аудиторий</span> не обязателен.
         </div>
       </div>
       <div className="footer">
