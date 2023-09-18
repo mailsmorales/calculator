@@ -4,7 +4,7 @@ import "./style.scss";
 const NumericInput = ({
   initialValue,
   maxValue,
-  minValue,
+  minValue = 0,
   onValueChange,
   disabled,
   title,
@@ -24,7 +24,7 @@ const NumericInput = ({
   };
 
   const decrement = () => {
-    setCount((prevCount) => (prevCount > minValue ? prevCount - 1 : minValue));
+    setCount((prevCount) => (minValue !== undefined && prevCount <= minValue ? minValue : prevCount - 1));
   };
 
   const handleMouseDown = (action) => {
@@ -106,6 +106,12 @@ const NumericInput = ({
       setCount(initialValue);
     }
   }, [initialValue]);
+
+  useEffect(() => {
+    if (minValue) {
+      setCount(minValue)
+    }
+  }, [minValue])
 
   return (
     <div className={`numeric ${disabled ? "disabled" : ""}`}>

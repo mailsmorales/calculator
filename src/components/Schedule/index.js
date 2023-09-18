@@ -34,7 +34,8 @@ const Schedule = ({ setData }) => {
   const [startTime, setStartTime] = useState(
     moment().set({ hour: 7, minute: 0 })
   );
-  const [endTime, setEndTime] = useState(null);
+  const [endTime, setEndTime] = useState();
+  const [selectedDays, setSelectedDays] = useState([])
 
   const reorderDaysOfWeek = (startDayIndex, daysOfWeek) => {
     if (startDayIndex < 1 || startDayIndex > 7) {
@@ -63,7 +64,7 @@ const Schedule = ({ setData }) => {
         .reverse()
         .findIndex((item) => item.selected);
 
-    if (lastActiveDay !== 7) {
+    if (lastActiveDay) {
       return reorderedDaysOfWeek.slice(0, lastActiveDay).length;
     } else {
       return 0;
@@ -79,11 +80,15 @@ const Schedule = ({ setData }) => {
   };
 
   useEffect(() => {
-    const selectedDays = days.filter((item) => item?.selected);
+
+    setSelectedDays(days.filter((item) => item?.selected))
+  }, [days])
+
+  useEffect(() => {
     const repetitions =
-      selectedDays.length > 0 ? Math.ceil(totalTime / selectedDays.length) : 1;
-    setEndDate(
-      moment(startDate).add(
+      selectedDays.length > 0 ? Math.floor(totalTime / selectedDays.length) : 1;
+    setEndDate(() => {
+      return moment(startDate).add(
         calculateDays(
           reorderDaysOfWeek(
             moment(startDate).day(),
@@ -91,16 +96,18 @@ const Schedule = ({ setData }) => {
           )
         ),
         "days"
-      )
-    );
-  }, [startDate, days, totalTime, hoursPerDay]);
+      );
+    });
+  }, [startDate, days, totalTime, hoursPerDay, selectedDays]);
 
   useEffect(() => {
     setEndTime(
       moment(startTime).add(
         hoursPerDay === 1
-          ? timerType?.duration * hoursPerDay
-          : (timerType?.duration + (breakTime?.duration ?? 0)) * hoursPerDay -
+          ? timerType
+            ? timerType.duration * hoursPerDay
+            : 45
+          : (timerType ? timerType.duration : 45 + (breakTime?.duration ?? 0)) * hoursPerDay -
               (breakTime?.duration ?? 0),
         "minute"
       )
@@ -152,16 +159,8 @@ const Schedule = ({ setData }) => {
           <NumericInput
             onValueChange={setTotalTime}
             title="Всего часов"
-            // initialValue={
-            //   hoursPerDay *
-            //     days.filter((item) => item.selected).length *
-            //     days.filter((item) => item.selected).length >
-            //   0
-            //     ? Math.ceil(totalTime / days.filter((item) => item.selected).length)
-            //     : 1
-            // }
-            initialValue={totalTime}
-            showMaxValue
+            initialValue={0}
+            minValue={selectedDays.length * hoursPerDay}
           />
           <DateRangePicker
             setStartDate={setStartDate}
