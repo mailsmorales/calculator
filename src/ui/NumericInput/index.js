@@ -9,6 +9,7 @@ const NumericInput = ({
   disabled,
   title,
   showMaxValue,
+  showMinValue,
 }) => {
   const [count, setCount] = useState(initialValue);
   const [intervalId, setIntervalId] = useState(null);
@@ -108,10 +109,12 @@ const NumericInput = ({
   }, [initialValue]);
 
   useEffect(() => {
-    if (minValue) {
-      setCount(minValue)
+    if (showMinValue) {
+      setCount(minValue);
+    } else {
+      setCount(minValue);
     }
-  }, [minValue])
+  }, [minValue, showMinValue]);
 
   return (
     <div className={`numeric ${disabled ? "disabled" : ""}`}>

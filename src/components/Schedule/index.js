@@ -20,7 +20,7 @@ const Schedule = ({ setData }) => {
   const [breakTime, setBreakTime] = useState(null);
   const [teacher, setTeacher] = useState("");
   const [lectureHall, setLectureHall] = useState("");
-  const [timerType, settimerType] = useState(null);
+  const [timerType, settimerType] = useState({ title: "Академический", key: "1", duration: 45 },);
   const [schoolName, setSchoolName] = useState("");
   const [totalTime, setTotalTime] = useState(0);
   const [hoursPerDay, setHoursPerDay] = useState(1);
@@ -86,7 +86,7 @@ const Schedule = ({ setData }) => {
 
   useEffect(() => {
     const repetitions =
-      selectedDays.length > 0 ? Math.floor(totalTime / selectedDays.length) : 1;
+      selectedDays.length > 0 ? Math.ceil(totalTime / selectedDays.length) : 1;
     setEndDate(() => {
       return moment(startDate).add(
         calculateDays(
@@ -104,10 +104,8 @@ const Schedule = ({ setData }) => {
     setEndTime(
       moment(startTime).add(
         hoursPerDay === 1
-          ? timerType
-            ? timerType.duration * hoursPerDay
-            : 45
-          : (timerType ? timerType.duration : 45 + (breakTime?.duration ?? 0)) * hoursPerDay -
+          ? timerType?.duration * hoursPerDay
+          : (timerType?.duration + (breakTime?.duration ?? 0)) * hoursPerDay -
               (breakTime?.duration ?? 0),
         "minute"
       )
@@ -159,8 +157,8 @@ const Schedule = ({ setData }) => {
           <NumericInput
             onValueChange={setTotalTime}
             title="Всего часов"
-            initialValue={0}
-            minValue={selectedDays.length * hoursPerDay}
+            initialValue={1}
+            minValue={1}
           />
           <DateRangePicker
             setStartDate={setStartDate}
@@ -183,7 +181,7 @@ const Schedule = ({ setData }) => {
             onValueChange={setHoursPerDay}
             title="Часов в день"
             initialValue={hoursPerDay}
-            maxValue={24}
+            maxValue={totalTime >= 24 ? 24 : totalTime}
             minValue={1}
           />
           <DateRangePicker
